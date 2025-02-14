@@ -1,0 +1,43 @@
+name: CI/CD Pipeline for Node.js API on ECS
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow only on pushes to the `main` branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Log in to AWS ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sudoku-api:latest .
+
+      # Push Docker image to ECR
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sudoku-api:latest
+
+      # Update ECS Service with the new image
+      - name: Update ECS Service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          cluster: your-ecs-cluster-name  # Your ECS Cluster name
+          service: your-ecs-service-name  # Your ECS Service name
+          task-definition: your-task-definition-family  # ECS Task Definition Family name
+          container-name: sudoku-api  # Your container name in ECS
+          container-image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sudoku-api:latest
