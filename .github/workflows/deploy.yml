@@ -41,3 +41,4 @@ jobs:
           task-definition: your-task-definition-family  # ECS Task Definition Family name
           container-name: sudoku-api  # Your container name in ECS
           container-image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sudoku-api:latest
+
