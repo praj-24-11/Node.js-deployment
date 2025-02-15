@@ -37,11 +37,11 @@ jobs:
         run: |
           cd Terraform
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
             -backend-config="key=terraform/state/terraform.tfstate" \
             -backend-config="region=us-east-1" \
             -backend-config="dynamodb_table=terraform-locks" \
-            -backend-config="encrypt=true"
+            -backend-config="encrypt=true" \
+            -backend-config="acl=bucket-owner-full-control"
 
       - name: Terraform Validate
         run: 

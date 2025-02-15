@@ -1,10 +1,30 @@
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "my-unique-terraform-state-bucket-${random_id.bucket_suffix.hex}"
+  acl    = "private"
+  region = "us-east-1"
+}
+
+resource "random_id" "bucket_suffix" {
+  byte_length = 8
+}
+
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-bucket"      # S3 bucket name
-    key            = "terraform/state/terraform.tfstate"  # Path inside the bucket
-    region         = "us-east-1"                   # Region where S3 and DynamoDB are located
-    encrypt        = true                          # Encryption for state files
-    dynamodb_table = "terraform-locks"            # DynamoDB table for state locking
-    acl            = "bucket-owner-full-control"  # Access control for state file
+    bucket         = aws_s3_bucket.terraform_state.bucket
+    key            = "terraform/state/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+    acl            = "bucket-owner-full-control"
+  }
+}
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+  attribute {
+    name = "LockID"
+    type = "S"
   }
 }
