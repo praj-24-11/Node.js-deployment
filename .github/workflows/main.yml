@@ -1,0 +1,26 @@
+name: Destroy AWS Resources
+
+on:
+  workflow_dispatch  # Allows manual trigger
+
+jobs:
+  destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialize Terraform
+        run: |
+          cd Terraform
+          terraform init
+
+      - name: Destroy All Resources
+        run: |
+          cd Terraform
+          terraform destroy -auto-approve
