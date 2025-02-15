@@ -35,7 +35,7 @@ jobs:
 
       - name: Terraform Init with Remote Backend
         run: |
-          cd terraform
+          cd Terraform
           terraform init \
             -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
             -backend-config="key=terraform/state/terraform.tfstate" \
@@ -45,17 +45,17 @@ jobs:
 
       - name: Terraform Validate
         run: 
-          cd terraform
+          cd Terraform
           terraform validate
 
       - name: Terraform Plan
         run: 
-          cd terraform
+          cd Terraform
           terraform plan -out=tfplan
 
       - name: Terraform Apply
         run: 
-          cd terraform
+          cd Terraform
           terraform apply -auto-approve tfplan
 
   lint-and-sast:
