@@ -1,6 +1,7 @@
 variable "project_name" {
   description = "The name of the project"
   type        = string
+  default     = "dummy-data-api"
 }
 
 # Networking Variables
