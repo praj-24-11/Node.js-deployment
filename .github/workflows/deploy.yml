@@ -57,7 +57,7 @@ jobs:
       - name: Terraform Apply
         run: |
           cd Terraform
-          terraform apply -auto-approve tfplan -lock=false
+          terraform apply -auto-approve tfplan
 
   lint-and-sast:
     name: Linting & Security Checks
