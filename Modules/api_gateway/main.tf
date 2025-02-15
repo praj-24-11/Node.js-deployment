@@ -43,17 +43,23 @@ resource "aws_api_gateway_deployment" "api" {
 }
 
 resource "aws_api_gateway_stage" "prod" {
-  stage_name   = "prod"
-  rest_api_id  = aws_api_gateway_rest_api.api.id
-  deployment_id = aws_api_gateway_deployment.api.id
-  description  = "Production stage"
+  aws_api_gateway_stage   = "prod"
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  deployment_id = aws_api_gateway_deployment.api_deployment.id
 
-  # Example of correct throttle configuration
-  method_settings {
-    resource_path = "/*"
-    http_method   = "*"
-    throttling_rate_limit = 1000
-    throttling_burst_limit = 2000
+  stage_configuration {
+    method_settings {
+      resource_path = "/*"
+      http_method   = "*"
+
+      logging_level = "INFO"
+      metrics_enabled = true
+      data_trace_enabled = true
+    }
+  }
+
+  tags = {
+    Name = "prod"
   }
 }
 

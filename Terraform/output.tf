@@ -31,10 +31,6 @@ output "api_gateway_id" {
   value = module.api_gateway.api_gateway_id
 }
 
-output "api_gateway_endpoint" {
-  value = module.api_gateway.api_gateway_endpoint
-}
-
 # Cognito Outputs
 output "cognito_user_pool_id" {
   value = module.cognito.cognito_user_pool_id
@@ -45,8 +41,8 @@ output "cognito_user_pool_arn" {
 }
 
 # WAF Outputs
-output "waf_web_acl_arn" {
-  value = module.waf.waf_web_acl_arn
+output "waf_arn" {
+  value = module.waf.waf_arn
 }
 
 # ECR Outputs

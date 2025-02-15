@@ -11,5 +11,11 @@ output "ecs_security_group_id" {
 }
 
 output "private_subnet_ids" {
-  value = aws_subnet.private_subnets[*].id  # Or whichever subnets you need for ECS
+  description = "List of private subnet IDs"
+  value       = aws_subnet.private[*].id
+}
+
+output "private_subnet_cidrs" {
+  description = "List of private subnet CIDR blocks"
+  value       = aws_subnet.private[*].cidr_block
 }
