@@ -33,7 +33,7 @@ resource "aws_api_gateway_integration" "proxy" {
   resource_id             = aws_api_gateway_resource.proxy.id
   http_method             = aws_api_gateway_method.proxy.http_method
   type                    = "HTTP_PROXY"
-  uri                     = "http://${module.alb.alb_dns_name}"
+  uri                     = "http://${var.alb_dns_name}"
   integration_http_method = "ANY"
 }
 
