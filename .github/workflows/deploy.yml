@@ -35,6 +35,7 @@ jobs:
 
       - name: Terraform Init with Remote Backend
         run: |
+          cd terraform
           terraform init \
             -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
             -backend-config="key=terraform/state/terraform.tfstate" \
@@ -43,13 +44,19 @@ jobs:
             -backend-config="encrypt=true"
 
       - name: Terraform Validate
-        run: terraform validate
+        run: 
+          cd terraform
+          terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: 
+          cd terraform
+          terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: 
+          cd terraform
+          terraform apply -auto-approve tfplan
 
   lint-and-sast:
     name: Linting & Security Checks
