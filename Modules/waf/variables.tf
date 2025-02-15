@@ -12,4 +12,5 @@ variable "rate_limit" {
 variable "api_gateway_arn" {
   description = "API Gateway ARN to associate WAF"
   type        = string
+  default     = "arn:aws:apigateway:us-east-1::/restapis/dvtko5xd0m"
 }
