@@ -45,10 +45,10 @@ jobs:
             -backend-config="acl=bucket-owner-full-control"
 
       - name: Terraform Validate
-        run: 
+        run: |
           cd Terraform
           terraform validate
-
+          
       - name: Terraform Plan
         run: 
           cd Terraform
