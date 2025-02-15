@@ -87,4 +87,3 @@ resource "aws_api_gateway_usage_plan" "api" {
   }
 }
 
-
