@@ -37,7 +37,7 @@ jobs:
         run: |
           cd Terraform
           terraform init \
-            -backend-config="bucket=unique8313878137891" \
+            -backend-config="bucket=testbucket240612932137" \
             -backend-config="key=terraform/state/terraform.tfstate" \
             -backend-config="region=us-east-1" \
             -backend-config="dynamodb_table=terraform-locks" \
