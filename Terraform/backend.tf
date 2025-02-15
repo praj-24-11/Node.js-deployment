@@ -10,7 +10,7 @@ resource "random_id" "bucket_suffix" {
 
 terraform {
   backend "s3" {
-    bucket         = aws_s3_bucket.terraform_state.bucket
+    bucket         = "unique8313878137891"
     key            = "terraform/state/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-locks"
