@@ -8,6 +8,7 @@ variable "project_name" {
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidrs" {
@@ -56,6 +57,7 @@ variable "desired_count" {
 variable "secret_arn" {
   description = "ARN of the Secrets Manager secret"
   type        = string
+  default     = "arn:aws:secretsmanager:us-east-1:123456789:secret:API_SECRET_KEY"
 }
 
 # API Gateway Variables
@@ -75,10 +77,12 @@ variable "burst_limit" {
 variable "waf_rate_limit" {
   description = "Rate limit for WAF"
   type        = number
+  default     = 1000
 }
 
 # ECR Variables
 variable "repository_name" {
   description = "Name of the ECR repository"
   type        = string
+  default     = "dummy-api"
 }
