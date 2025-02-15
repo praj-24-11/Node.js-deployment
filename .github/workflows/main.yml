@@ -9,18 +9,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Initialize Terraform
+      - name: Terraform Init with Remote Backend
         run: |
           cd Terraform
-          terraform init
+          terraform init \
+            -backend-config="bucket=testbucket240612932137" \
+            -backend-config="key=terraform/state/terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="dynamodb_table=terraform-locks" \
+            -backend-config="encrypt=true" \
+            -backend-config="acl=bucket-owner-full-control"
 
-      - name: Destroy All Resources
+      - name: Terraform Destroy
         run: |
           cd Terraform
           terraform destroy -auto-approve
