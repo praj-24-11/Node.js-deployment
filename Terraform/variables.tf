@@ -38,14 +38,14 @@ variable "container_image" {
 
 variable "cpu" {
   description = "CPU units for the container"
-  type        = string
-  default     = "256"
+  type        = number
+  default     = 256
 }
 
 variable "memory" {
   description = "Memory for the container"
-  type        = string
-  default     = "512"
+  type        = number
+  default     = 512
 }
 
 variable "desired_count" {
