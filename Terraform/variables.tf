@@ -29,6 +29,7 @@ variable "availability_zones" {
 variable "container_image" {
   description = "Docker image for the ECS task"
   type        = string
+  default     = "123456789.dkr.ecr.us-east-1.amazonaws.com/dummy-api:latest"
 }
 
 variable "cpu" {
