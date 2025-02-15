@@ -53,15 +53,18 @@ resource "aws_api_gateway_stage" "prod" {
 }
 
 resource "aws_api_gateway_method_settings" "prod_method_settings" {
-  rest_api_id   = aws_api_gateway_rest_api.api.id
-  stage_name    = aws_api_gateway_stage.prod.stage_name
-  resource_path = "/*"
-  http_method   = "*"
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  stage_name  = aws_api_gateway_stage.prod.stage_name
 
-  logging_level      = "INFO"
-  metrics_enabled    = true
-  data_trace_enabled = true
+  method_path = "/*"  # Apply settings to all methods across all resources
+
+  settings {
+    logging_level      = "INFO"
+    metrics_enabled    = true
+    data_trace_enabled = true
+  }
 }
+
 
 
 
