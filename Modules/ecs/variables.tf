@@ -1,24 +1,47 @@
-variable "cluster_name" {
-  description = "The name of the ECS Cluster"
+variable "project_name" {
+  description = "Project name"
   type        = string
 }
 
-variable "task_family" {
-  description = "The ECS Task family"
+variable "container_image" {
+  description = "ECR image URL"
   type        = string
 }
 
-variable "container_definitions_file" {
-  description = "File path to container definitions"
+variable "cpu" {
+  description = "CPU for ECS task"
   type        = string
+  default     = "256"
 }
 
-variable "service_name" {
-  description = "The name of the ECS service"
+variable "memory" {
+  description = "Memory for ECS task"
   type        = string
+  default     = "512"
 }
 
 variable "desired_count" {
-  description = "Desired number of tasks in the ECS service"
+  description = "Number of ECS tasks to run"
   type        = number
+  default     = 2
+}
+
+variable "private_subnet_ids" {
+  description = "Private subnet IDs for ECS tasks"
+  type        = list(string)
+}
+
+variable "ecs_security_group_id" {
+  description = "Security group ID for ECS tasks"
+  type        = string
+}
+
+variable "target_group_arn" {
+  description = "Target group ARN for ALB"
+  type        = string
+}
+
+variable "secret_arn" {
+  description = "ARN for storing secrets in AWS Secrets Manager"
+  type        = string
 }

@@ -1,20 +1,67 @@
 resource "aws_api_gateway_rest_api" "api" {
-  name        = var.api_name
-  description = "API for Node.js Application"
+  name        = "${var.project_name}-api-gateway"
+  description = "API Gateway for ${var.project_name}"
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
-resource "aws_api_gateway_resource" "resource" {
+resource "aws_api_gateway_resource" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   parent_id   = aws_api_gateway_rest_api.api.root_resource_id
-  path_part   = "v1"
+  path_part   = "{proxy+}"
 }
 
-resource "aws_api_gateway_method" "method" {
+resource "aws_api_gateway_method" "proxy" {
   rest_api_id   = aws_api_gateway_rest_api.api.id
-  resource_id   = aws_api_gateway_resource.resource.id
+  resource_id   = aws_api_gateway_resource.proxy.id
+  http_method   = "ANY"
   authorization = "COGNITO_USER_POOLS"
-  http_method   = "GET"
-  request_parameters = {
-    "method.request.querystring.name" = true
+  authorizer_id = aws_api_gateway_authorizer.cognito.id
+}
+
+resource "aws_api_gateway_authorizer" "cognito" {
+  name          = "${var.project_name}-cognito-authorizer"
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  type          = "COGNITO_USER_POOLS"
+  provider_arns = [var.cognito_user_pool_arn]
+}
+
+resource "aws_api_gateway_integration" "proxy" {
+  rest_api_id             = aws_api_gateway_rest_api.api.id
+  resource_id             = aws_api_gateway_resource.proxy.id
+  http_method             = aws_api_gateway_method.proxy.http_method
+  type                    = "HTTP_PROXY"
+  uri                     = "http://${var.alb_dns_name}"
+  integration_http_method = "ANY"
+}
+
+resource "aws_api_gateway_deployment" "api" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  stage_name  = "prod"
+}
+
+resource "aws_api_gateway_stage" "prod" {
+  deployment_id = aws_api_gateway_deployment.api.id
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  stage_name    = "prod"
+  throttle_settings {
+    rate_limit  = var.rate_limit
+    burst_limit = var.burst_limit
+  }
+}
+
+resource "aws_api_gateway_usage_plan" "api" {
+  name = "${var.project_name}-usage-plan"
+  
+  api_stages {
+    api_id = aws_api_gateway_rest_api.api.id
+    stage  = aws_api_gateway_stage.prod.stage_name
+  }
+
+  throttle_settings {
+    rate_limit  = var.rate_limit
+    burst_limit = var.burst_limit
   }
 }

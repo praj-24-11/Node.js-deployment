@@ -1,28 +1,44 @@
-const express = require('express');
+const express = require("express");
+const faker = require("faker");
+
 const app = express();
-const port = 3000;
+app.use(express.json());
 
-// Simple Sudoku puzzle generator (static for this example)
-function generateSudoku() {
-    // A basic 9x9 Sudoku puzzle (some filled cells, others empty)
-    return [
-        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 0, 6, 0],
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-        [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    ];
-}
+app.get("/generate", (req, res) => {
+  const { fields, amount } = req.query;
+  
+  if (!fields || !amount) {
+    return res.status(400).json({ error: "Missing 'fields' or 'amount' parameter" });
+  }
 
-app.get('/sudoku', (req, res) => {
-    const puzzle = generateSudoku();
-    res.json({ puzzle });
+  const fieldList = fields.split(",");
+  const recordCount = parseInt(amount, 10);
+
+  const data = Array.from({ length: recordCount }, () => {
+    let record = {};
+    fieldList.forEach((field) => {
+      switch (field.trim().toLowerCase()) {
+        case "firstname":
+          record.firstName = faker.name.firstName();
+          break;
+        case "lastname":
+          record.lastName = faker.name.lastName();
+          break;
+        case "email":
+          record.email = faker.internet.email();
+          break;
+        case "phone":
+          record.phone = faker.phone.phoneNumber();
+          break;
+        default:
+          record[field] = `Unsupported field: ${field}`;
+      }
+    });
+    return record;
+  });
+
+  res.json(data);
 });
 
-app.listen(port, () => {
-    console.log(`Sudoku API listening at http://localhost:${port}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
