@@ -48,14 +48,14 @@ jobs:
         run: |
           cd Terraform
           terraform validate
-          
+
       - name: Terraform Plan
-        run: 
+        run: |
           cd Terraform
           terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: 
+        run: |
           cd Terraform
           terraform apply -auto-approve tfplan
 
