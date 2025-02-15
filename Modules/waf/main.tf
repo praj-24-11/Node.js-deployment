@@ -91,6 +91,6 @@ resource "aws_wafv2_web_acl" "api_waf" {
 }
 
 resource "aws_wafv2_web_acl_association" "api_waf_association" {
-  resource_arn = var.api_gateway_arn
+  resource_arn = "arn:aws:apigateway:us-east-1::/restapis/dvtko5xd0m"
   web_acl_arn  = aws_wafv2_web_acl.api_waf.arn
 }
