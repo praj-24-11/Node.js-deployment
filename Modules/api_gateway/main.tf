@@ -47,15 +47,13 @@ resource "aws_api_gateway_stage" "prod" {
   rest_api_id   = aws_api_gateway_rest_api.api.id
   deployment_id = aws_api_gateway_deployment.api.id
 
-  stage_configuration {
-    method_settings {
-      resource_path = "/*"
-      http_method   = "*"
+  method_settings {
+    resource_path = "/*"
+    http_method   = "*"
 
-      logging_level = "INFO"
-      metrics_enabled = true
-      data_trace_enabled = true
-    }
+    logging_level      = "INFO"
+    metrics_enabled    = true
+    data_trace_enabled = true
   }
 
   tags = {
