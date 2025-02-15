@@ -60,6 +60,7 @@ variable "rate_limit" {
 variable "burst_limit" {
   description = "API Gateway burst limit"
   type        = number
+  default     = 5000
 }
 
 # WAF Variables
