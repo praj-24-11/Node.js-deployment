@@ -34,8 +34,8 @@ module "api_gateway" {
   project_name           = "dummy-data-api"
   alb_dns_name           = module.alb.alb_dns_name
   cognito_user_pool_arn  = module.cognito.cognito_user_pool_arn
-  rate_limit            = 10
-  burst_limit           = 20
+  rate_limit             = 10
+  burst_limit            = 20
 }
 
 module "cognito" {
