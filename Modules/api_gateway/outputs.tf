@@ -7,6 +7,6 @@ output "api_gateway_invoke_url" {
 }
 
 output "api_gateway_arn" {
-  value = "arn:aws:apigateway:${var.region}::/restapis/${aws_api_gateway_rest_api.api.id}/stages/prod"
+  value = "arn:aws:apigateway:us-east-1::/restapis/${aws_api_gateway_rest_api.api.id}/stages/prod"
   description = "The ARN of the API Gateway stage"
 }
