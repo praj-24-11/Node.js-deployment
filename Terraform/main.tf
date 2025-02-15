@@ -26,7 +26,7 @@ module "alb" {
   project_name          = "dummy-data-api"
   vpc_id                = module.networking.vpc_id
   public_subnet_ids     = module.networking.public_subnet_ids
-  alb_security_group_id = module.networking.alb_security_group_id
+  alb_security_group_id = module.alb.alb_security_group_id
 }
 
 module "api_gateway" {
