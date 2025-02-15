@@ -1,8 +1,3 @@
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "my-unique-terraform-state-bucket-${random_id.bucket_suffix.hex}"
-  acl    = "private"
-  region = "us-east-1"
-}
 
 resource "random_id" "bucket_suffix" {
   byte_length = 8

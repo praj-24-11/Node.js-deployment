@@ -43,6 +43,7 @@ resource "aws_ecs_task_definition" "api" {
   ])
 }
 
+
 resource "aws_ecs_service" "api" {
   name            = "${var.project_name}-service"
   cluster         = aws_ecs_cluster.main.id
@@ -57,7 +58,7 @@ resource "aws_ecs_service" "api" {
   }
 
   load_balancer {
-    target_group_arn = var.target_group_arn
+    target_group_arn = var.target_group_arn  # This now refers to the output from module.alb
     container_name   = "${var.project_name}-container"
     container_port   = 80
   }
@@ -70,3 +71,40 @@ resource "aws_ecs_service" "api" {
     ignore_changes = [task_definition, desired_count]
   }
 }
+
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "${var.project_name}-task-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Effect    = "Allow"
+        Sid       = ""
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "ecs_task_role" {
+  name = "${var.project_name}-task-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Effect    = "Allow"
+        Sid       = ""
+      }
+    ]
+  })
+}
+

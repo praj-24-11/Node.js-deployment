@@ -11,20 +11,21 @@ module "ecs" {
   source                = "../Modules/ecs"
   project_name          = "dummy-data-api"
   container_image       = "123456789.dkr.ecr.us-east-1.amazonaws.com/dummy-api:latest"
-  cpu                  = "256"
-  memory               = "512"
-  desired_count        = 2
-  private_subnet_ids   = module.networking.private_subnet_ids
+  cpu                   = "256"
+  memory                = "512"
+  desired_count         = 2
+  private_subnet_ids    = module.networking.private_subnet_ids
   ecs_security_group_id = module.networking.ecs_security_group_id
-  target_group_arn     = module.alb.target_group_arn
-  secret_arn           = "arn:aws:secretsmanager:us-east-1:123456789:secret:API_SECRET_KEY"
+  target_group_arn      = module.alb.target_group_blue_arn  # This should now work
+  secret_arn            = "arn:aws:secretsmanager:us-east-1:123456789:secret:API_SECRET_KEY"
 }
 
+
 module "alb" {
-  source               = "../Modules/alb"
-  project_name         = "dummy-data-api"
-  vpc_id               = module.networking.vpc_id
-  public_subnet_ids    = module.networking.public_subnet_ids
+  source                = "../Modules/alb"
+  project_name          = "dummy-data-api"
+  vpc_id                = module.networking.vpc_id
+  public_subnet_ids     = module.networking.public_subnet_ids
   alb_security_group_id = module.networking.alb_security_group_id
 }
 
