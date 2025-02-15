@@ -35,16 +35,19 @@ variable "container_image" {
 variable "cpu" {
   description = "CPU units for the container"
   type        = string
+  default     = "256"
 }
 
 variable "memory" {
   description = "Memory for the container"
   type        = string
+  default     = "512"
 }
 
 variable "desired_count" {
   description = "Number of ECS tasks to run"
   type        = number
+  default     = 2
 }
 
 variable "secret_arn" {
@@ -56,6 +59,7 @@ variable "secret_arn" {
 variable "rate_limit" {
   description = "API Gateway rate limit"
   type        = number
+  default     = 10
 }
 
 variable "burst_limit" {
